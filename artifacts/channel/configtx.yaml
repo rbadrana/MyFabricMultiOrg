@@ -1,18 +1,20 @@
+# Explaination is at: https://hyperledger-fabric.readthedocs.io/en/release-2.2/create_channel/create_channel_config.html
+#Policies are explained: https://hyperledger-fabric.readthedocs.io/en/release-2.2/create_channel/channel_policies.html
 Organizations:
 
     - &OrdererOrg
         Name: OrdererOrg
         ID: OrdererMSP
         MSPDir: ../../setup1/vm4/crypto-config/ordererOrganizations/example.com/msp
-
+            #Signature policies support arbitrary combinations of AND, OR, and NOutOf
         Policies:
-            Readers:
+            Readers:        #It means who can read
+                Type: Signature                     #these are basic policies
+                Rule: "OR('OrdererMSP.member')"
+            Writers:        #It means who can write
                 Type: Signature
                 Rule: "OR('OrdererMSP.member')"
-            Writers:
-                Type: Signature
-                Rule: "OR('OrdererMSP.member')"
-            Admins:
+            Admins:         #It means who will be admin
                 Type: Signature
                 Rule: "OR('OrdererMSP.admin')"
 
@@ -23,20 +25,20 @@ Organizations:
         MSPDir: ../../setup1/vm1/crypto-config/peerOrganizations/org1.example.com/msp
 
         Policies:
-            Readers:
+            Readers:            #It means who can read
                 Type: Signature
                 Rule: "OR('Org1MSP.admin', 'Org1MSP.peer', 'Org1MSP.client')"
-            Writers:
+            Writers:            #It means who can write
                 Type: Signature
                 Rule: "OR('Org1MSP.admin', 'Org1MSP.client')"
-            Admins:
+            Admins:             #It means who will be admin
                 Type: Signature
                 Rule: "OR('Org1MSP.admin')"
-            Endorsement:
+            Endorsement:        #It means who will take care of endorsement policies
                 Type: Signature
                 Rule: "OR('Org1MSP.peer')"
 
-        AnchorPeers:
+        AnchorPeers:            #It means who will be ancor peer 
             - Host: peer0.org1.example.com
               Port: 7051
 
@@ -103,7 +105,7 @@ Capabilities:
 Application: &ApplicationDefaults
 
     Organizations:
-
+    # ImplicitMeta policies can be : <ALL|ANY|MAJORITY> <sub_policy>
     Policies:
         Readers:
             Type: ImplicitMeta
@@ -123,9 +125,9 @@ Application: &ApplicationDefaults
 
     Capabilities:
         <<: *ApplicationCapabilities
-
+    #more info.: https://hyperledger-fabric.readthedocs.io/en/release-2.2/access_control.html
 Orderer: &OrdererDefaults
-
+    #For more info: https://hyperledger-fabric.readthedocs.io/en/release-2.2/raft_configuration.html
     OrdererType: etcdraft
 
     EtcdRaft:
@@ -175,7 +177,7 @@ Channel: &ChannelDefaults
 
 Profiles:
 
-    BasicChannel:
+    BasicChannel:    #application channel properties
         Consortium: SampleConsortium
         <<: *ChannelDefaults
         Application:
@@ -187,7 +189,7 @@ Profiles:
             Capabilities:
                 <<: *ApplicationCapabilities
 
-    OrdererGenesis:
+    OrdererGenesis:         #system channel properties
         <<: *ChannelDefaults
         Capabilities:
             <<: *ChannelCapabilities
@@ -195,7 +197,7 @@ Profiles:
             <<: *OrdererDefaults
             OrdererType: etcdraft
             EtcdRaft:
-                Consenters:
+                Consenters:     #overiding above consentor and defining three orderers here
                 - Host: orderer.example.com
                   Port: 7050
                   ClientTLSCert: ../../setup1/vm4/crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/tls/server.crt
