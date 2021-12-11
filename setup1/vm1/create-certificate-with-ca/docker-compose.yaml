@@ -15,6 +15,7 @@ services:
     ports:
       - "7054:7054"
     command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
+    # it starts fabric ca server using username:admin and passwrd:adminpw and same must be provided in .sh file
     volumes:
       - ./fabric-ca/org1:/etc/hyperledger/fabric-ca-server
     container_name: ca.org1.example.com
