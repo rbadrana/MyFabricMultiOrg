@@ -41,18 +41,18 @@ setGlobalsForPeer1Org1() {
 
 presetup() {
     echo Vendoring Go dependencies ...
-    pushd ./../../artifacts/src/github.com/fabcar/go
+    pushd ./../../artifacts/src/github.com/fabtmp/go
     GO111MODULE=on go mod vendor
     popd
     echo Finished vendoring Go dependencies
 }
-# presetup
+#presetup
 
 CHANNEL_NAME="mychannel"
 CC_RUNTIME_LANGUAGE="golang"
 VERSION="1"
-CC_SRC_PATH="./../../artifacts/src/github.com/fabcar/go"
-CC_NAME="fabcar"
+CC_SRC_PATH="./../../artifacts/src/github.com/fabtmp/go"
+CC_NAME="fabtmp"
 
 packageChaincode() {
     rm -rf ${CC_NAME}.tar.gz
@@ -62,7 +62,7 @@ packageChaincode() {
         --label ${CC_NAME}_${VERSION}
     echo "===================== Chaincode is packaged on peer0.org1 ===================== "
 }
-# packageChaincode
+#packageChaincode
 
 installChaincode() {
     setGlobalsForPeer0Org1
@@ -71,7 +71,7 @@ installChaincode() {
 
 }
 
-# installChaincode
+#installChaincode
 
 queryInstalled() {
     setGlobalsForPeer0Org1
@@ -82,13 +82,13 @@ queryInstalled() {
     echo "===================== Query installed successful on peer0.org1 on channel ===================== "
 }
 
-# queryInstalled
+#queryInstalled
 
 approveForMyOrg1() {
     setGlobalsForPeer0Org1
     # set -x
     # Replace localhost with your orderer's vm IP address
-    peer lifecycle chaincode approveformyorg -o localhost:7050 \
+    peer lifecycle chaincode approveformyorg -o 34.125.43.122:7050 \
         --ordererTLSHostnameOverride orderer.example.com --tls \
         --cafile $ORDERER_CA --channelID $CHANNEL_NAME --name ${CC_NAME} --version ${VERSION} \
         --init-required --package-id ${PACKAGE_ID} \
@@ -99,8 +99,8 @@ approveForMyOrg1() {
 
 }
 
-# queryInstalled
-# approveForMyOrg1
+queryInstalled
+approveForMyOrg1
 
 checkCommitReadyness() {
     setGlobalsForPeer0Org1
@@ -110,11 +110,11 @@ checkCommitReadyness() {
     echo "===================== checking commit readyness from org 1 ===================== "
 }
 
-# checkCommitReadyness
+#checkCommitReadyness
 
 commitChaincodeDefination() {
     setGlobalsForPeer0Org1
-    peer lifecycle chaincode commit -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com \
+    peer lifecycle chaincode commit -o 34.125.43.122:7050 --ordererTLSHostnameOverride orderer.example.com \
         --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA \
         --channelID $CHANNEL_NAME --name ${CC_NAME} \
         --peerAddresses localhost:7051 --tlsRootCertFiles $PEER0_ORG1_CA \
@@ -123,7 +123,7 @@ commitChaincodeDefination() {
         --version ${VERSION} --sequence ${VERSION} --init-required
 }
 
-# commitChaincodeDefination
+#commitChaincodeDefination
 
 queryCommitted() {
     setGlobalsForPeer0Org1

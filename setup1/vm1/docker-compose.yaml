@@ -93,6 +93,8 @@ services:
       - ./:/etc/hyperledger/channel/
     networks:
       - test
+    extra_hosts:
+      - orderer.example.com:34.125.43.122
 
   peer1.org1.example.com:
     container_name: peer1.org1.example.com
@@ -135,6 +137,8 @@ services:
       - ./:/etc/hyperledger/channel/
     networks:
       - test
+    extra_hosts:
+      - orderer.example.com:34.125.43.122
 
   cli:
     container_name: cli
@@ -167,3 +171,11 @@ services:
       - ./../vm2/crypto-config/peerOrganizations/org2.example.com/:/etc/hyperledger/channel/crypto-config/peerOrganizations/org2.example.com/
       - ./../vm3/crypto-config/peerOrganizations/org3.example.com/:/etc/hyperledger/channel/crypto-config/peerOrganizations/org3.example.com/
       - ./../vm4/crypto-config/ordererOrganizations/example.com/:/etc/hyperledger/channel/crypto-config/ordererOrganizations/example.com/
+    extra_hosts:
+      - orderer.example.com:34.125.43.122
+      - peer0.org1.example.com:34.125.28.102
+      - peer1.org1.example.com:34.125.28.102
+      - peer0.org2.example.com:34.125.204.166
+      - peer1.org2.example.com:34.125.204.166
+      - peer0.org3.example.com:34.125.96.29
+      - peer1.org3.example.com:34.125.96.29
