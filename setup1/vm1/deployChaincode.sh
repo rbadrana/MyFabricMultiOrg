@@ -41,7 +41,7 @@ setGlobalsForPeer1Org1() {
 
 presetup() {
     echo Vendoring Go dependencies ...
-    pushd ./../../artifacts/src/github.com/fabtmp/go
+    pushd ./../../artifacts/src/github.com/orgtmp/go
     GO111MODULE=on go mod vendor
     popd
     echo Finished vendoring Go dependencies
@@ -50,9 +50,9 @@ presetup() {
 
 CHANNEL_NAME="mychannel"
 CC_RUNTIME_LANGUAGE="golang"
-VERSION="1"
-CC_SRC_PATH="./../../artifacts/src/github.com/fabtmp/go"
-CC_NAME="fabtmp"
+VERSION="2"
+CC_SRC_PATH="./../../artifacts/src/github.com/orgtmp/go"
+CC_NAME="orgtmp"
 
 packageChaincode() {
     rm -rf ${CC_NAME}.tar.gz
@@ -99,8 +99,8 @@ approveForMyOrg1() {
 
 }
 
-queryInstalled
-approveForMyOrg1
+#queryInstalled
+#approveForMyOrg1
 
 checkCommitReadyness() {
     setGlobalsForPeer0Org1
@@ -131,7 +131,7 @@ queryCommitted() {
 
 }
 
-# queryCommitted
+#queryCommitted
 
 chaincodeInvokeInit() {
     setGlobalsForPeer0Org1
